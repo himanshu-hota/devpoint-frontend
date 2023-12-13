@@ -1,0 +1,36 @@
+
+.post {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.post .blogTexts h2{
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.post .blogInfo{
+  margin: 6px 0;
+  color:#aaa;
+  font-size: 0.7rem;
+  font-weight: bold;
+  display: flex;
+  gap: 10px;
+}
+
+.post .blogInfo .blogAuthor{
+  color:#333;
+}
+
+.post .blogSummary{
+  margin: 10px 0;
+  line-height: 1.4rem;
+
+}
+
+a{
+  text-decoration: none;
+  color: inherit;
+}
