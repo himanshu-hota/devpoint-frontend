@@ -13,6 +13,11 @@ import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes';
 import PostPage from './pages/Post/PostPage';
 import User from './pages/User/User';
 import EditPost from './pages/EditPost/EditPost';
+import './App.css'
+import Explore from './pages/Explore/Explore';
+import BloggerProfile from './pages/Explore/BloggerProfile';
+import Profile from './pages/Profile/Profile';
+import EditProfile from './pages/EditProfile/EditProfile';
 
 
 const router = createBrowserRouter(
@@ -22,10 +27,14 @@ const router = createBrowserRouter(
     <Route path="/" element={<RootLayout />}>
 
       <Route index element={<ProtectedRoutes> <Home /> </ProtectedRoutes>} />
-      <Route path='/post/:postId' element={ <PostPage /> } />
+      <Route path='/blog/:blogId' element={ <PostPage /> } />
       <Route path='/user/:userId' element={ <User /> } />
       <Route path='/edit/:postId' element={<EditPost />} />
+      <Route path='/edit-profile' element={<EditProfile />} /> 
+      <Route path='/profile' element={<Profile />} />
       <Route path='/create' element={ <CreatePost /> } />
+      <Route path='/explore' element={<Explore />} />
+      <Route path='/bloggers/:bloggerId' element={<BloggerProfile />} />
       <Route path='/login' element={<Login />} />,
       <Route path='/register' element={<Register />} />,
 

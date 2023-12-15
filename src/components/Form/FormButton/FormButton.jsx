@@ -3,7 +3,7 @@ import './FormButton.module.css';
 
 const FormButton = ({disabled,children}) => {
   return (
-    <button disabled={disabled}>{children}</button>
+    <button disabled={disabled} className='form-button'>{children}</button>
   )
 }
 

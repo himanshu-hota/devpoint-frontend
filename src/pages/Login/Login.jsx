@@ -1,9 +1,8 @@
-import styles from './Login.module.css';
 import Input from '../../components/Form/Input/Input';
 import FormButton from '../../components/Form/FormButton/FormButton';
 import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 
@@ -47,17 +46,22 @@ const Login = () => {
     }
 
     return (
-        <form className={styles.login} onSubmit={handleSubmit(onSubmit)} >
-            <h1 className={styles.formHeading}>Login</h1>
-            <Input type='email' placeholder='Enter your email here' register={register} label={'email'} validations={{ required: "Email is required", minLength: 5 }} />
-            {errors.email && <p role="alert">{errors.email?.message} {errors.email?.type === 'minLength' && 'Email must have at least 5 chararacters'} </p>}
+        <section className="h-screen w-full flex justify-center items-center overflow-hidden">
+            <form className='custom-form px-4 py-6 h-max w-[90%]' onSubmit={handleSubmit(onSubmit)} >
+                <h1 className='form-heading'>Login</h1>
+                <Input type='email' placeholder='Enter your email here' register={register} label={'email'} validations={{ required: "Email is required", minLength: 5 }} />
+                {errors.email && <p role="alert">{errors.email?.message} {errors.email?.type === 'minLength' && 'Email must have at least 5 chararacters'} </p>}
 
 
-            <Input type='password' placeholder='Enter your password here' register={register} label={'password'} validations={{ required: "Password is required", minLength: 8 }} />
-            {errors.password && <p role="alert">{errors.password?.message} {errors.password?.type === 'minLength' && 'Password must have at least 8 chararacters'}</p>}
+                <Input type='password' placeholder='Enter your password here' register={register} label={'password'} validations={{ required: "Password is required", minLength: 8 }} />
+                {errors.password && <p role="alert">{errors.password?.message} {errors.password?.type === 'minLength' && 'Password must have at least 8 chararacters'}</p>}
 
-            <FormButton disabled={isLoading}>{isLoading ? "Loading...." : 'Login'}</FormButton>
-        </form>
+                <FormButton disabled={isLoading}>{isLoading ? "Loading...." : 'Login'}</FormButton>
+
+                <p className="">New to Dev-Point ? <Link to={'/register'} className='underline italic '>Register</Link></p>
+
+            </form>
+        </section>
     )
 }
 

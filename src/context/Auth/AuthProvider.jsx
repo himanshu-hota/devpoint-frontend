@@ -18,7 +18,7 @@ const AuthProvider = ({ children }) => {
                 const res = await fetch('http://localhost:4000/auth/profile', options);
                 const data = await res.json();
                 if(res.ok){
-                    setUser({ email: data.data.email, id: data.data.id });
+                    setUser(data.data);
                     setIsLoggedIn(true);
                 }
 

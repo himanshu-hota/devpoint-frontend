@@ -41,3 +41,19 @@ export function formatDateString(dateString) {
 }
 
 
+export function getDate(inputDate) {
+    const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    const date = new Date(inputDate);
+
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const monthIndex = date.getUTCMonth();
+    const year = date.getUTCFullYear();
+
+    const monthName = monthNames[monthIndex];
+
+    return `${monthName} ${day} ${year}`;
+}

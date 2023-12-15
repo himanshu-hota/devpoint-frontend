@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import './Input.module.css';
 
 const Input = ({ type,label,placeholder,validations, register }) => {
-  return <input type={type} placeholder={placeholder} {...register(label, {...validations })} />;
+  return <input type={type} placeholder={placeholder} {...register(label, {...validations })} className='form-input' />;
 };
 
 Input.propTypes = {
