@@ -8,7 +8,7 @@ const AllBlogs = ({blogId,blog}) => {
     
   return (
       <Link to={`/blog/${blogId}`} className='h-full w-full'>
-          <div className="blogger bg-card rounded-full w-full h-20 flex justify-between items-center p-4 hover:opacity-95 hover:text-cta">
+          <div className="blogger bg-card rounded-full w-full h-20 flex justify-between items-center p-4 hover:opacity-95 hover:text-cta md:font-semibold">
               <div className="img h-14 w-14 ">
                   <img src={'http://localhost:4000/' + blog.cover} className="h-full w-full rounded-full" />
 

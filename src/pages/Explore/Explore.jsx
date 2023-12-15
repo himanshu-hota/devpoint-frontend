@@ -44,7 +44,7 @@ const Explore = () => {
         />
       </div>
 
-      <div className="bloggers-container h-[80%] w-full border-2 flex flex-col justify-between items-center border-gray-400 rounded-md p-4 overflow-scroll">
+      <div className="bloggers-container h-[80%] w-full border-2 flex flex-col justify-between items-center border-gray-400 rounded-md p-4 overflow-scroll overflow-x-hidden">
        
 
         <div className="bloggers w-full h-max flex flex-col gap-5 items-center justify-start py-8">

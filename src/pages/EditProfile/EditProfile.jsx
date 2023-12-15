@@ -64,15 +64,16 @@ const EditProfile = () => {
 
 
   return (
-    <section className="h-full w-full overflow-scroll py-20 flex justify-center items-center">
+    <section className="h-full w-full overflow-scroll py-20 mt-5 flex justify-center items-center">
       <form className='custom-form px-4 py-6 h-full w-[90%] ' onSubmit={handleSubmit(onSubmit)}>
           <h1 className='form-heading'>Update Profile</h1>
 
           <Input type='text' placeholder='Enter your name here' register={register} label={'name'} validations={{ required: "Name is required" }} />
           {errors.name && <p role="alert">{errors.name?.message} </p>}
 
+        <div className='w-full'>
           <Input type='file' register={register} label={'file'} />
-          {errors.file && <p role="alert">{errors.file?.message} </p>}
+              </div>
 
           <Input type='password' placeholder='Enter current password here' register={register} label={'currentpassword'} validations={{ required: "Current password is required", minLength: 8 }} />
           {errors.currentpassword && <p role="alert">{errors.currentpassword?.message} {errors.currentpassword?.type === 'minLength' && 'Password must have at least 8 chararacters'}</p>}

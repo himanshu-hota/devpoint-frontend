@@ -15,20 +15,24 @@ const Profile = () => {
     const { name, createdAt, totalBlogs, blogPosts,profilePicture } = user;
     const imagePath = 'http://localhost:4000/' + profilePicture;
     return (
-        <section className="blogger-profile bg-background text-content h-full w-full py-20 md:flex md:gap-6 md:px-12">
+        <section className="blogger-profile bg-background text-content h-full w-full py-20 md:flex md:gap-6 md:px-12 md:mt-6">
 
-            <div className="profile-info w-full md:w-[50%] h-[50%] md:h-full md:border-2 md:border-cta flex justify-between items-center md:flex-col p-4 ">
+            <div className="profile-info w-full md:w-[50%] h-[50%] md:h-full md:border-2 md:border-cta md:rounded-md flex justify-between items-center md:flex-col p-4 ">
                 <div className="img h-full md:h-1/3 w-1/2 md:w-full p-3">
                     <img src={imagePath || tempImage} alt='blogger-image' className='h-full w-full md:w-1/2 object-cover border-2 border-cta p-2 rounded-lg md:mx-auto' />
                 </div>
 
                 <div className="info h-full w-1/2 md:w-full px-2 md:px-8 py-6 flex flex-col gap-3">
                     <h1 className="name"><span className="font-semibold">Name : </span>{name}</h1>
+                    <hr className="h-0.5 w-full bg-content m-0 p-0 hidden md:block" />
                     <p className="member-since"><span className="font-semibold">Member since : </span>{formatDateString(new Date(createdAt))}</p>
+                    <hr className="h-0.5 w-full bg-content m-0 p-0 hidden md:block" />
                     <p className="member-since"><span className="font-semibold">Total blogs : </span>{totalBlogs}</p>
+                    <hr className="h-0.5 w-full bg-content m-0 p-0 hidden md:block" />
                     <Link to={`/edit-profile`}>
                         <FormButton>Edit Profile</FormButton>
                     </Link>
+                    
                 </div>
             </div>
 

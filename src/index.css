@@ -52,12 +52,8 @@ html {
   background: rgba(var(--background));
 }
 
-body{
-  background: rgba(var(--background));
-}
-
 .custom-form{
-  @apply bg-card text-content rounded-md flex flex-col justify-start items-center gap-3 md:gap-8 overflow-scroll;
+  @apply bg-card text-content rounded-md flex flex-col justify-start items-center gap-3 md:gap-8 overflow-scroll overflow-x-hidden shadow-2xl ;
 }
 
 .form-heading {
@@ -77,7 +73,7 @@ body{
 } */
 
 .quil-container{
-  @apply w-[98%] max-h-[500px] border-2 border-cta rounded-md overflow-scroll relative;
+  @apply w-[98%] max-h-[500px] border-2 border-cta rounded-md overflow-scroll overflow-x-hidden relative;
 }
 
 .ql-editor {

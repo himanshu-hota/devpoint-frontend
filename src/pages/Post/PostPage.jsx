@@ -50,7 +50,7 @@ const PostPage = () => {
 
   return (
 
-    <section className="single-blog w-full h-screen bg-background text-content px-4 py-20 overflow-scroll">
+    <section className="single-blog w-full h-screen bg-background text-content px-4 py-20 mt-6 overflow-scroll">
 
       <div className="postImage w-full md:w-1/2 md:mx-auto h-1/2 border-2 border-cta rounded-md p-2 my">
         <img src={imagePath} alt={post.title} className="h-full w-full rounded-md" />

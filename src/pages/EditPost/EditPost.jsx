@@ -77,25 +77,31 @@ const EditPost = () => {
     }
 
     return (
-        <form className='custom-form px-4 py-4 h-[95%] w-[90%]' onSubmit={handleSubmit(onSubmit)} >
-            <h1 className='form-heading'>Edit blog</h1>
-            <Input type='text' placeholder='Enter your title here' register={register} label={'title'} validations={{ required: "Title is required", minLength: 5 }} />
-            {errors.title && <p role="alert">{errors.title?.message} {errors.title?.type === 'minLength' && 'Title must have at least 5 chararacters'} </p>}
+        <section className="edit-post w-full h-screen py-20 md:pb-5 ">
+            <form className='custom-form p-4  mx-auto h-full w-[90%] overflow-scroll ' onSubmit={handleSubmit(onSubmit)} >
+                <h1 className='form-heading'>Edit blog</h1>
+                <Input type='text' placeholder='Enter your title here' register={register} label={'title'} validations={{ required: "Title is required", minLength: 5 }} />
+                {errors.title && <p role="alert">{errors.title?.message} {errors.title?.type === 'minLength' && 'Title must have at least 5 chararacters'} </p>}
 
 
-            <Input type='text' placeholder='Enter your summary here' register={register} label={'summary'} validations={{ required: "Summary is required", minLength: 8 }} />
-            {errors.summary && <p role="alert">{errors.summary?.message} {errors.summary?.type === 'minLength' && 'Summary must have at least 8 chararacters'}</p>}
+                <Input type='text' placeholder='Enter your summary here' register={register} label={'summary'} validations={{ required: "Summary is required", minLength: 8 }} />
+                {errors.summary && <p role="alert">{errors.summary?.message} {errors.summary?.type === 'minLength' && 'Summary must have at least 8 chararacters'}</p>}
 
-            <Input type='file' register={register} label={'file'} />
-            {errors.file && <p role="alert">{errors.file?.message} </p>}
+                <div className="w-full">
+                    <Input type='file' register={register} label={'file'} />
+                    {errors.file && <p role="alert">{errors.file?.message} </p>}
+                </div>
+
+                <div className="qul w-full">
+                    <ReactQuillComp value={textAreaContent} onChange={setTextAreaContent} />
+                </div>
 
 
-            <ReactQuillComp value={textAreaContent} onChange={setTextAreaContent} />
 
-
-            <FormButton disabled={isLoading}>{isLoading ? "Loading...." : 'Update Post'}</FormButton>
-            <p className="text-sm text-content md:hidden">Note : If you are a smartphone user, please switch to desktop mode for better experience</p>
-        </form>
+                <FormButton disabled={isLoading}>{isLoading ? "Loading...." : 'Update Post'}</FormButton>
+                <p className="text-sm text-content md:hidden">Note : If you are a smartphone user, please switch to desktop mode for better experience</p>
+            </form>
+        </section>
     )
 }
 
