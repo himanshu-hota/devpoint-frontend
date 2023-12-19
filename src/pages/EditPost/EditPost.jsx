@@ -6,6 +6,7 @@ import Input from "../../components/Form/Input/Input";
 import FormButton from "../../components/Form/FormButton/FormButton";
 import ReactQuillComp from "../../components/Form/Quill/ReactQuill";
 
+
 const EditPost = () => {
     const { register, handleSubmit, formState: { errors }, setValue } = useForm();
     const [isLoading, setIsLoading] = useState(false);
@@ -22,11 +23,9 @@ const EditPost = () => {
                 const post = data.post;
                 setValue('title', post.title);
                 setValue('summary', post.summary);
-                console.log(post.content);
                 setTextAreaContent(post.content)
 
             } catch (err) {
-                console.log(err);
                 toast("Something went wrong!!!");
             }
         }
@@ -66,19 +65,24 @@ const EditPost = () => {
                 navigate(`/blog/${postId}`);
             }
 
-            setIsLoading(false);
+            
         } catch (err) {
-            setIsLoading(false);
+            
             toast('Failed to create your blog!!!');
-            console.log(err);
-
+            
+        } finally {
+            setIsLoading(false);
         }
 
     }
 
     return (
         <section className="edit-post w-full h-screen py-20 md:pb-5 ">
-            <form className='custom-form p-4  mx-auto h-full w-[90%] overflow-scroll ' onSubmit={handleSubmit(onSubmit)} >
+
+            
+
+            <form className='custom-form p-4  mx-auto h-full w-[90%] overflow-scroll relative' onSubmit={handleSubmit(onSubmit)} >
+                
                 <h1 className='form-heading'>Edit blog</h1>
                 <Input type='text' placeholder='Enter your title here' register={register} label={'title'} validations={{ required: "Title is required", minLength: 5 }} />
                 {errors.title && <p role="alert">{errors.title?.message} {errors.title?.type === 'minLength' && 'Title must have at least 5 chararacters'} </p>}
@@ -99,8 +103,12 @@ const EditPost = () => {
 
 
                 <FormButton disabled={isLoading}>{isLoading ? "Loading...." : 'Update Post'}</FormButton>
-                <p className="text-sm text-content md:hidden">Note : If you are a smartphone user, please switch to desktop mode for better experience</p>
+                
+                
             </form>
+            
+           
+            
         </section>
     )
 }

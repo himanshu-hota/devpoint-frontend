@@ -4,7 +4,8 @@ import useAuth from "../../hooks/useAuth";
 import FormButton from '../../components/Form/FormButton/FormButton';
 import { Link } from 'react-router-dom';
 
-const tempImage = "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
+const tempImage = 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg';
+
 
 const Profile = () => {
 
@@ -12,8 +13,8 @@ const Profile = () => {
 
     if(!user) return <p>Loading.......</p>;
 
-    const { name, createdAt, totalBlogs, blogPosts,profilePicture } = user;
-    const imagePath = 'http://localhost:4000/' + profilePicture;
+    const { name, createdAt,  blogPosts,profilePicture } = user;
+    const imagePath = profilePicture;
     return (
         <section className="blogger-profile bg-background text-content h-full w-full py-20 md:flex md:gap-6 md:px-12 md:mt-6">
 
@@ -27,7 +28,7 @@ const Profile = () => {
                     <hr className="h-0.5 w-full bg-content m-0 p-0 hidden md:block" />
                     <p className="member-since"><span className="font-semibold">Member since : </span>{formatDateString(new Date(createdAt))}</p>
                     <hr className="h-0.5 w-full bg-content m-0 p-0 hidden md:block" />
-                    <p className="member-since"><span className="font-semibold">Total blogs : </span>{totalBlogs}</p>
+                    <p className="member-since"><span className="font-semibold">Total blogs : </span>{blogPosts?.length}</p>
                     <hr className="h-0.5 w-full bg-content m-0 p-0 hidden md:block" />
                     <Link to={`/edit-profile`}>
                         <FormButton>Edit Profile</FormButton>
@@ -44,7 +45,7 @@ const Profile = () => {
                 <div className="all-blogs border-2 border-cta md:border-0 p-4 rounded-md h-full w-full overflow-scroll overflow-x-hidden">
                     {
                         blogPosts?.map(item => (
-                            <AllBlogs key={item.postId._id} blog={item.postId} blogId={item.postId._id} />
+                            <AllBlogs key={item?.postId?._id} blog={item?.postId} blogId={item?.postId?._id} />
                         ))
                     }
                 </div>

@@ -40,10 +40,13 @@ const Register = () => {
       if (res.ok) {
         navigate('/login');
       }
-      setIsLoading(false);
+      
 
     } catch (err) {
-      toast(err.message);
+      // toast(err.message);
+      toast('Registeration failed!!!')
+    }finally{
+      setIsLoading(false);
     }
   }
 
@@ -65,7 +68,7 @@ const Register = () => {
         <Input type='password' placeholder='Confirm Password' register={register} label={'confirmpassword'} validations={{ required: "Confirm-Password is required", minLength: 8, validate: validateConfirmPassword, }} />
         {errors.confirmpassword && <p role="alert">{errors.confirmpassword?.message}</p>}
 
-        <FormButton disabled={isLoading}>{isLoading ? "Loading...." : 'Login'}</FormButton>
+        <FormButton disabled={isLoading}>{isLoading ? "Loading...." : 'Register'}</FormButton>
 
         <p className="">Already have an account ? <Link to={'/login'} className='underline italic '>Login</Link></p>
 

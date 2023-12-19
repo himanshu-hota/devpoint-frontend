@@ -3,7 +3,7 @@ import {useParams } from "react-router-dom";
 import {formatDateString} from '../../util/formatTime';
 import AllBlogs from "../../components/AllBlogs/AllBlogs";
 
-const tempImage = "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
+const tempImage = 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg';
 
 const BloggerProfile = () => {
 
@@ -28,9 +28,9 @@ const BloggerProfile = () => {
     }, [bloggerId]);
     
     
-
-    const {name,createdAt,totalBlogs,blogPosts,profilePicture} = bloggerInfo;
-    const imagePath = 'http://localhost:4000/' + profilePicture;
+    console.log(bloggerInfo);
+    const {name,createdAt,totalBlogs,blogPosts,profilePicture } = bloggerInfo;
+    const imagePath = profilePicture;
 
 
     return (

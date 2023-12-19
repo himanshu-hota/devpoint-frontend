@@ -8,36 +8,52 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+
+    const isTokenValid = async (token) => {
+        try {
+            const tokenInfo = {token};
+            const options = {
+                method:'POST',
+                body:JSON.stringify(tokenInfo),
+                headers: { 'Content-Type': 'application/json' },
+                
+            };
+            const res = await fetch('http://localhost:4000/auth/profile', options);
+            const data = await res.json();
+            if (res.ok) {
+                setUser(data.data);
+                setIsLoggedIn(true);
+            }else{
+                localStorage.removeItem('devPToken')
+            }
+
+            
+        } catch (err) {
+            toast('Something went wrong!!!');
+        }
+    };
+
     useEffect(() => {
 
-        const isTokenValid = async () => {
-            try {
-                const options = {
-                    credentials: 'include'
-                };
-                const res = await fetch('http://localhost:4000/auth/profile', options);
-                const data = await res.json();
-                if(res.ok){
-                    setUser(data.data);
-                    setIsLoggedIn(true);
-                }
+        const token = localStorage.getItem('devPToken');
+        
+        if(token){
+            isTokenValid(token);
+        }else{
+            setUser(null);
+            setIsLoggedIn(false);
+        }
 
-            } catch (err) {
-                toast('Something went wrong!!!');
-            }
-        };
-
-        isTokenValid();
+        
 
 
     }, [])
 
 
-    const login = (userData) => {
+    const login = (userData,token) => {
+        localStorage.setItem('devPToken', token);
         setUser(userData);
-        if(userData.email){
-            setIsLoggedIn(true);
-        }
+        setIsLoggedIn(true);
         
     };
 
@@ -48,6 +64,7 @@ const AuthProvider = ({ children }) => {
                 credentials: 'include'
             };
             await fetch('http://localhost:4000/auth/logout', options);
+            localStorage.removeItem('devPToken')
             setUser(null);
             setIsLoggedIn(false);
         } catch (err) {

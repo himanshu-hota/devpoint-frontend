@@ -37,18 +37,19 @@ const CreatePost = () => {
       }
 
       const res = await fetch('http://localhost:4000/blog/create', options);
-
       if (res.ok) {
         toast('Blog created successfully!!!');
+        console.log(res);
         navigate('/');
       }
 
-      setIsLoading(false);
     } catch (err) {
-      setIsLoading(false);
+      
       toast('Failed to create your blog!!!');
       console.log(err);
 
+    }finally{
+      setIsLoading(false);
     }
 
   }

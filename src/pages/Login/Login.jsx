@@ -12,7 +12,7 @@ const Login = () => {
     const navigate = useNavigate();
     const {login,isLoggedIn} = useAuth();
 
-    if(isLoggedIn) return <Navigate to='/' replace={true} />
+    if(isLoggedIn) return <Navigate to='/'  />
 
     const onSubmit = async (data) => {
         setIsLoading(true);
@@ -30,17 +30,23 @@ const Login = () => {
             const data = await res.json();
                         
             toast.dismiss();
-            setIsLoading(false);
+            
 
             if(res.ok){
                 toast(data.message);
-                login(data.data);
+                const token = data?.token;
+                login(data.data,token);
                 navigate('/');
+            }else{
+                toast(data.message);
             }
+
+            
             
         } catch (err) {
+            toast('Login Failed!!!!');
+        } finally {
             setIsLoading(false);
-            toast(err.message);
         }
 
     }

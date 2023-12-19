@@ -1,21 +1,23 @@
-import PropTypes from 'prop-types';
-import { Navigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
+import { Outlet, useNavigate } from 'react-router-dom';
+
+import { useEffect } from 'react';
+
+const ProtectedRoutes = () => {
 
 
-const ProtectedRoutes = ({children}) => {
-    
-    const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
-    if(!isLoggedIn) return <Navigate to={'/login'} replace={true} />
+  useEffect(() => {
 
-    return (<>
-      {children}
-    </>);
+    const token = localStorage.getItem('devPToken');
+    if (!token) {
+      navigate('/login');
+    }
+
+  }, [navigate]);
+
+  return <Outlet />;
 }
 
-ProtectedRoutes.propTypes = {
-    children: PropTypes.node.isRequired,
-}
 
 export default ProtectedRoutes;

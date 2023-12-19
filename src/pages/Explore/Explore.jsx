@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Blogger from "./Blogger";
+import { toast } from "react-toastify";
 
 const Explore = () => {
   const [bloggers, setBloggers] = useState([]);
@@ -8,10 +9,14 @@ const Explore = () => {
 
   useEffect(() => {
     const fetchBloggers = async () => {
-      const res = await fetch('http://localhost:4000/user/bloggers');
-      const data = await res.json();
+     try {
+       const res = await fetch('http://localhost:4000/user/bloggers');
+       const data = await res.json();
 
-      setBloggers(data.bloggers);
+       setBloggers(data.bloggers);
+     } catch (err) {
+      toast('No Bloggers found!!!');
+     }
     }
 
     fetchBloggers();
@@ -51,10 +56,11 @@ const Explore = () => {
           {filteredBloggers?.map((item) => (
             <Blogger
               bloggerName={item.name}
-              postsCount={item.totalBlogs}
+              postsCount={item.blogPosts.length}
               bloggerId={item._id.toString()}
+              profilePicture={item.profilePicture}
               key={item._id}
-            />
+              />
           ))}
         </div>
 

@@ -6,7 +6,7 @@ const modules = {
     toolbar: [
         [{ 'header': [1, 2, false] }],
         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         ['clean']
     ],
 };
@@ -14,7 +14,7 @@ const modules = {
 const formats = [
     'header',
     'bold', 'italic', 'underline', 'strike', 'blockquote',
-    'list', 'bullet', 'indent',
+    'list', 'bullet', 
     
 ];
 
