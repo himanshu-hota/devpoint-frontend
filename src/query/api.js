@@ -2,8 +2,6 @@ import { QueryClient } from "@tanstack/react-query";
 
 const API_ENDPOINT = import.meta.env.VITE_ENDPOINT;
 
-console.log(API_ENDPOINT);
-
 export const getBlogs = async () => {
 
     const res = await fetch(`${API_ENDPOINT}/blogs`);

@@ -34,12 +34,14 @@ const AuthProvider = ({ children }) => {
     };
 
     const logout = async () => {
+
+        const API_ENDPOINT = import.meta.env.VITE_ENDPOINT;
         try {
             const options = {
                 method:'POST',
                 credentials: 'include'
             };
-            await fetch('http://localhost:4000/auth/logout', options);
+            await fetch(`${API_ENDPOINT}/auth/logout`, options);
             localStorage.removeItem('devPToken')
             setUser(null);
             setIsLoggedIn(false);
