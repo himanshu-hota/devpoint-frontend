@@ -1,9 +1,12 @@
 import { QueryClient } from "@tanstack/react-query";
 
+const API_ENDPOINT = import.meta.env.VITE_ENDPOINT;
+
+console.log(API_ENDPOINT);
 
 export const getBlogs = async () => {
 
-    const res = await fetch(`http://localhost:4000/blogs`);
+    const res = await fetch(`${API_ENDPOINT}/blogs`);
     const fetchedPosts = await res.json();
 
     if (!res.ok) {
@@ -20,7 +23,7 @@ export const getBlogs = async () => {
 
 export const getBlog = async ({ signal, blogId }) => {
 
-    const res = await fetch(`http://localhost:4000/blogs/${blogId}`, { signal });
+    const res = await fetch(`${API_ENDPOINT}/blogs/${blogId}`, { signal });
     const data = await res.json();
 
     if (!res.ok) {
@@ -42,7 +45,7 @@ export const isTokenValid = async ({ signal, token }) => {
         headers: { 'Content-Type': 'application/json' },
 
     };
-    const res = await fetch('http://localhost:4000/auth/profile', options, { signal });
+    const res = await fetch(`${API_ENDPOINT}/auth/profile`, options, { signal });
     const data = await res.json();
     if (res.ok) {
         // setUser(data.data);
@@ -69,7 +72,7 @@ export const createBlog = async ({ formData }) => {
         credentials: 'include'
     }
 
-    const res = await fetch('http://localhost:4000/blog/create', options);
+    const res = await fetch(`${API_ENDPOINT}/blog/create`, options);
     const data = await res.json();
     if (!res.ok) {
         const error = new Error('Could not create your blog');
@@ -92,7 +95,7 @@ export const deleteBlog = async (blogId) => {
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include'
     };
-    const url = `http://localhost:4000/blog/delete/${blogId}`;
+    const url = `${API_ENDPOINT}/blog/delete/${blogId}`;
     const res = await fetch(url, options);
     const data = await res.json();
 
@@ -111,7 +114,7 @@ export const deleteBlog = async (blogId) => {
 
 export const getBloggers = async () => {
 
-    const res = await fetch('http://localhost:4000/user/bloggers');
+    const res = await fetch(`${API_ENDPOINT}/user/bloggers`);
     const data = await res.json();
 
     if (!res.ok) {
@@ -130,7 +133,7 @@ export const getBloggers = async () => {
 export const getBlogger = async ({ signal, bloggerId }) => {
 
 
-    const res = await fetch(`http://localhost:4000/user/bloggers/${bloggerId}`, { signal });
+    const res = await fetch(`${API_ENDPOINT}/user/bloggers/${bloggerId}`, { signal });
     const blogger = await res.json();
 
 
@@ -165,7 +168,7 @@ export const updateProfile = async (values) => {
     }
 
 
-    const res = await fetch('http://localhost:4000/user/update', options)
+    const res = await fetch(`${API_ENDPOINT}/user/update`, options)
     const data = await res.json();
 
     if (!res.ok) {
@@ -188,7 +191,7 @@ export const loginUser = async ({ formData, login }) => {
         credentials: 'include'
     }
 
-    const res = await fetch('http://localhost:4000/auth/login', options);
+    const res = await fetch(`${API_ENDPOINT}/auth/login`, options);
     const data = await res.json();
 
     if (res.ok) {
@@ -213,7 +216,7 @@ export const registerUser = async ({ formData }) => {
         headers: { 'Content-Type': 'application/json' }
     }
 
-    const res = await fetch('http://localhost:4000/auth/register', options)
+    const res = await fetch(`${API_ENDPOINT}/auth/register`, options)
     const data = await res.json();
 
 
