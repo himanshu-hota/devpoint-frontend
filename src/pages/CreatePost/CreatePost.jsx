@@ -6,21 +6,18 @@ import { toast } from 'react-toastify';
 import Input from "../../components/Form/Input/Input";
 import FormButton from "../../components/Form/FormButton/FormButton";
 import ReactQuillComp from "../../components/Form/Quill/ReactQuill";
-
+import { useCreateBlog } from "../../query/react-query";
 
 const CreatePost = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [isLoading, setIsLoading] = useState(false);
   const [textAreaContent, setTextAreaContent] = useState('');
   const navigate = useNavigate();
-
-
-
+  const { mutate, isPending: isLoading } = useCreateBlog(navigate);
+  
   const onSubmit = async (data) => {
 
     try {
-      setIsLoading(true);
-
+      
       const formData = new FormData();
 
       const { title, summary, file } = data;
@@ -30,26 +27,10 @@ const CreatePost = () => {
       formData.set('content', textAreaContent);
       formData.set('file', file[0]);
 
-      const options = {
-        method: "POST",
-        body: formData,
-        credentials: 'include'
-      }
-
-      const res = await fetch('http://localhost:4000/blog/create', options);
-      if (res.ok) {
-        toast('Blog created successfully!!!');
-        console.log(res);
-        navigate('/');
-      }
-
-    } catch (err) {
+      mutate({formData});
       
+    } catch (err) {
       toast('Failed to create your blog!!!');
-      console.log(err);
-
-    }finally{
-      setIsLoading(false);
     }
 
   }
@@ -74,6 +55,7 @@ const CreatePost = () => {
         <FormButton disabled={isLoading}>{isLoading ? "Loading...." : 'Create blog'}</FormButton>
         <p className="text-sm text-content md:hidden">Note : If you are a smartphone user, please switch to desktop mode for better experience</p>
       </form>
+
      </section>
     
   )

@@ -1,18 +1,17 @@
 import Input from '../../components/Form/Input/Input';
 import FormButton from '../../components/Form/FormButton/FormButton';
 import { useForm } from "react-hook-form";
-import { toast } from 'react-toastify';
-import { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import { useRegister } from '../../query/react-query';
 
 
 const Register = () => {
 
   const { register, handleSubmit, formState: { errors }, getValues } = useForm();
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
+  const {mutate,isPending:isLoading} = useRegister(navigate);
 
   if (isLoggedIn) return <Navigate to='/' replace={true} />
 
@@ -21,40 +20,15 @@ const Register = () => {
     return value === password || 'Passwords do not match';
   };
 
-
-  const onSubmit = async (data) => {
-    const { name, email, password, confirmpassword } = data;
-    try {
-      setIsLoading(true);
-      const options = {
-        method: 'POST',
-        body: JSON.stringify({ name, email, password, confirmpassword }),
-        headers: { 'Content-Type': 'application/json' }
-      }
-
-      const res = await fetch('http://localhost:4000/auth/register', options)
-      const data = await res.json();
-
-      toast.dismiss();
-      toast(data.message);
-      if (res.ok) {
-        navigate('/login');
-      }
-      
-
-    } catch (err) {
-      // toast(err.message);
-      toast('Registeration failed!!!')
-    }finally{
-      setIsLoading(false);
-    }
+  const onSubmit = async (formData) => {
+    mutate({formData});
   }
 
   return (
-    <section className="h-screen w-full flex justify-center items-center overflow-hidden">
-      <form className='custom-form px-4 py-4 h-max w-[90%]' onSubmit={handleSubmit(onSubmit)}>
+    <section className="h-full w-full flex justify-center items-center">
+      <form className='custom-form h-max w-[90%] md:w-[50%] mx-auto px-4 py-4 ' onSubmit={handleSubmit(onSubmit)}>
         <h1 className='form-heading'>Register</h1>
-
+        
         <Input type='text' placeholder='Enter your name here' register={register} label={'name'} validations={{ required: "Name is required" }} />
         {errors.name && <p role="alert">{errors.name?.message} </p>}
 

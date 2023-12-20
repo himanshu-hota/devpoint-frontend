@@ -1,45 +1,36 @@
-import { useEffect, useState } from "react";
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import Post from "../../components/Post/Post";
-
+import { useGetBlogs } from "../../query/react-query";
+import Loading from "../../components/LazyLoader/Loading";
+import Error from "../ErrorPage/Error";
 
 const Home = () => {
-  const [posts, setPosts] = useState([]);
 
+  const { data, isPending: isfetchingBlogs, isError: failedToFetchBlogs, error: blogsError } = useGetBlogs();
 
-  useEffect(() => {
-
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch('http://localhost:4000/blogs');
-        const fetchedPosts = await res.json();
-        setPosts(fetchedPosts.posts);
-
-      } catch (err) {
-        toast('Something went wrong!!!');
-      }
-    }
-
-    fetchPosts();
-
-  }, [])
-
+  if (failedToFetchBlogs) return <Error title='Could Not fetch blogs' message={blogsError.message} />
 
   return (
-    <section className="home px-10 py-20 w-full h-full  bg-background text-content overflow-scroll overflow-x-hidden">
+    <section className="home px-10  w-full h-full bg-background text-content ">
       <h1 className="text-3xl font-semibold">What&apos;s New Today: </h1>
       <hr className="my-4 md:my-8 w-2/3 md:w-1/3 h-0.5 bg-cta" />
 
-      <div className="posts flex flex-col justify-center items-center gap-5">
+      {isfetchingBlogs && <Loading />}
+      {failedToFetchBlogs && <Error title='Could Not fetch blogs' message={blogsError.message} />}
 
+      {data &&
+          <div className="posts flex flex-col justify-center items-center gap-5">
 
-        {
-          posts?.map((post) => {
-            return <Post post={post} key={post._id} />
-          })
-        }
-      </div>
-    </section>
+            {
+            data.blogs.map((post) => {
+                return <Post post={post} key={post._id} />
+              })
+            }
+          </div>
+
+    }
+      
+    </section >
 
 
   )

@@ -10,17 +10,7 @@ const Blogger = ({ bloggerName, postsCount, bloggerId, profilePicture }) => {
     const {user} = useAuth()
 
     if(user?._id?.toString() === bloggerId){
-        return (<Link to={`/profile`} className='h-full w-full'>
-            <div className="blogger bg-card rounded-full w-full h-20 flex justify-between items-center p-4 hover:opacity-95">
-                <div className="img h-14 w-14">
-                    <img src={imagePath || tempImage} alt="blogger-profile-picture" className="object-cover h-full w-full rounded-full" />
-
-                </div>
-                <h1 className="name flex-1 ml-3">{bloggerName}</h1>
-
-                <p className="posts-count p-2 text-md text-white bg-cta rounded-full ">{postsCount}</p>
-            </div>
-        </Link>);
+        return <></>;
     }else{
 
     return (
@@ -32,7 +22,7 @@ const Blogger = ({ bloggerName, postsCount, bloggerId, profilePicture }) => {
                 </div>
                 <h1 className="name flex-1 ml-3">{bloggerName}</h1>
 
-                <p className="posts-count p-2 text-md text-white bg-cta rounded-full ">{postsCount }</p>
+                <p className="posts-count px-5 md:px-6 text-md text-white bg-cta rounded-full ">{postsCount }</p>
             </div>
         </Link>
     )

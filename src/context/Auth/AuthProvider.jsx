@@ -2,52 +2,28 @@ import { useEffect, useState } from 'react';
 import AuthContext from './AuthContext';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
+import {useValidateToken} from '../../query/react-query';
 
 const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
-    const isTokenValid = async (token) => {
-        try {
-            const tokenInfo = {token};
-            const options = {
-                method:'POST',
-                body:JSON.stringify(tokenInfo),
-                headers: { 'Content-Type': 'application/json' },
-                
-            };
-            const res = await fetch('http://localhost:4000/auth/profile', options);
-            const data = await res.json();
-            if (res.ok) {
-                setUser(data.data);
-                setIsLoggedIn(true);
-            }else{
-                localStorage.removeItem('devPToken')
-            }
-
-            
-        } catch (err) {
-            toast('Something went wrong!!!');
-        }
-    };
+    const token = localStorage.getItem('devPToken');
+    
+    const {data} = useValidateToken(token);
 
     useEffect(() => {
-
-        const token = localStorage.getItem('devPToken');
         
-        if(token){
-            isTokenValid(token);
+        if (data){
+            setUser(data.data);
+            setIsLoggedIn(true);
         }else{
             setUser(null);
             setIsLoggedIn(false);
         }
 
-        
-
-
-    }, [])
+    }, [data])
 
 
     const login = (userData,token) => {

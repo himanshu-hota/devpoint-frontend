@@ -1,40 +1,31 @@
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import {useState,useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from 'react-toastify';
 import Input from "../../components/Form/Input/Input";
 import FormButton from "../../components/Form/FormButton/FormButton";
 import ReactQuillComp from "../../components/Form/Quill/ReactQuill";
-
+import {useGetBlog}  from '../../query/react-query.js';
+import Error from '../ErrorPage/Error';
+import Loading from '../../components/LazyLoader/Loading';
 
 const EditPost = () => {
+
     const { register, handleSubmit, formState: { errors }, setValue } = useForm();
     const [isLoading, setIsLoading] = useState(false);
     const [textAreaContent, setTextAreaContent] = useState('');
     const navigate = useNavigate();
+    
     const { postId } = useParams();
+    const { data, error, isError, isPending } = useGetBlog(postId);
 
     useEffect(() => {
-
-        const fetchPost = async () => {
-            try {
-                const res = await fetch(`http://localhost:4000/blogs/${postId}`);
-                const data = await res.json();
-                const post = data.post;
-                setValue('title', post.title);
-                setValue('summary', post.summary);
-                setTextAreaContent(post.content)
-
-            } catch (err) {
-                toast("Something went wrong!!!");
-            }
+        if (data) {
+            setValue('title', data.post.title);
+            setValue('summary', data.post.summary);
+            setTextAreaContent(data.post.content);
         }
-
-        fetchPost();
-
-
-    }, [postId, setValue]);
-
+    }, [data,setValue]);
 
     const onSubmit = async (data) => {
 
@@ -79,9 +70,10 @@ const EditPost = () => {
     return (
         <section className="edit-post w-full h-screen py-20 md:pb-5 ">
 
-            
+            {isPending && <Loading />}
+            {isError && <Error message={error.message} />}
 
-            <form className='custom-form p-4  mx-auto h-full w-[90%] overflow-scroll relative' onSubmit={handleSubmit(onSubmit)} >
+           {data && <form className='custom-form p-4  mx-auto h-full w-[90%] overflow-scroll relative' onSubmit={handleSubmit(onSubmit)} >
                 
                 <h1 className='form-heading'>Edit blog</h1>
                 <Input type='text' placeholder='Enter your title here' register={register} label={'title'} validations={{ required: "Title is required", minLength: 5 }} />
@@ -105,7 +97,7 @@ const EditPost = () => {
                 <FormButton disabled={isLoading}>{isLoading ? "Loading...." : 'Update Post'}</FormButton>
                 
                 
-            </form>
+            </form>}
             
            
             

@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { toast } from 'react-toastify';
 import DOMPurify from 'dompurify';
 import { CiEdit } from "react-icons/ci";
 
@@ -10,48 +9,29 @@ import { getDate } from '../../util/formatTime';
 import { MdDelete } from "react-icons/md";
 import Portal from "../../components/Portal/Portal";
 import Button from "../../components/Form/Button/Button";
+import { useDeleteBlog, useGetBlog } from "../../query/react-query";
+import Error from "../ErrorPage/Error";
+import Loading from "../../components/LazyLoader/Loading";
 
 
 const PostPage = () => {
 
-  const [post, setPost] = useState({});
   const { blogId } = useParams();
   const { user } = useAuth();
   const [deletePost, setDeletePost] = useState(false);
 
   const navigate = useNavigate();
 
-
-  useEffect(() => {
-
-    const fetchPost = async () => {
-      try {
-        const res = await fetch(`http://localhost:4000/blogs/${blogId}`);
-        const data = await res.json();
-        setPost(data.post);
-      } catch (err) {
-        console.log(err);
-        toast("Something went wrong!!!");
-      }
-    }
-
-    fetchPost();
-
-
-  }, [blogId]);
-
-
-  if (!post) return <p>No Post Found!!!</p>
-
-
-
+  const {data,isError,isPending,error} = useGetBlog(blogId);
+  const {mutate,isPending:isDeleting} =useDeleteBlog(navigate);
+    
+  if (isPending) return <Loading />
+  if(isError) return <Error message={error.message} />
+  
+  const {post : blog} = data;
   // Sanitize the HTML content using DOMPurify
-  const sanitizedSummary = DOMPurify.sanitize(post.content);
-  const imagePath = post.cover;
-
-  if (!post) return <p>No Post Found!!!</p>
-
-
+  const sanitizedSummary = DOMPurify.sanitize(blog.content);
+  const imagePath = blog.cover;
 
   const hideDeletePortal = () => {
     setDeletePost(false);
@@ -63,27 +43,12 @@ const PostPage = () => {
   }
 
   const confirmDelete = async () => {
+    mutate(blogId);
     setDeletePost(false);
-    try {
-      const options = {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials:'include'
-      };
-      const url = `http://localhost:4000/blog/delete/${blogId}`;
-      const res = await fetch(url, options);
-      const data = await res.json();
-
-      console.log(data);
-      if(res.ok){
-        toast('Blog Deleted successfully!!')
-        navigate('/');
-      }
-    } catch (err) {
-      toast('Could not delete the blog');
-    }
+    
   }
 
+  if(isDeleting) return  <Loading />;
 
 
   return (
@@ -91,23 +56,25 @@ const PostPage = () => {
     <section className="single-blog w-full h-screen bg-background text-content px-4 md:px-20 py-20 mt-6 overflow-scroll" onClick={hideDeletePortal}>
 
       <div className="postImage w-full md:w-1/2 md:mx-auto h-1/2 border-2 border-cta rounded-md p-2 my">
-        <img src={imagePath} alt={post.title} className="h-full w-full rounded-md" />
+        <img src={imagePath} alt={blog.title} className="h-full w-full rounded-md" />
         {/* <Image imagePath={imagePath} altText={post.title} classes='h-full w-full rounded-md' /> */}
       </div>
 
       <div className="flex justify-center items-center w-full h-6 gap-5 my-4 md:my-6 md:text-2xl">
-        <time className="font-light text-content ">{getDate(new Date(post.createdAt))}</time>
+        <time className="font-light text-content ">{getDate(new Date(blog.createdAt))}</time>
         {
-          user?._id?.toString() === post?.author?._id?.toString() ? (
+          user?._id?.toString() === blog?.author?._id?.toString() ? (
             <div className="btns flex items-center gap-4">
-              <Link to={`/edit/${post?._id}`} className="text-2xl">
+              <Link to={`/edit/${blog?._id}`} className="text-2xl">
                 <CiEdit />
               </Link>
 
-              <MdDelete className="bg-red-900 p-1 text-3xl text-white rounded-full cursor-pointer" onClick={showDeletePortal} />
+              {!isDeleting && <MdDelete className="bg-red-900 p-1 text-3xl text-white rounded-full cursor-pointer" onClick={showDeletePortal} />}
+
+              
 
             </div>
-          ) : <Link to={`/bloggers/${post?.author?._id}`} className="">by {`${post?.author?.name}`}</Link>
+          ) : <Link to={`/bloggers/${blog?.author?._id}`} className="">by {`${blog?.author?.name}`}</Link>
         }
       </div>
 
@@ -115,12 +82,12 @@ const PostPage = () => {
 
 
       <h1 className="text-sm  md:text-2xl   w-full my-3 break-words ">
-        <span className="font-semibold text-content">Title</span> : {post.title}
+        <span className="font-semibold text-content">Title</span> : {blog.title}
       </h1>
 
       <hr className="w-[50%] md:w-[15%] h-[2px] bg-card mb-4 " />
       <p className="text-sm  md:text-2xl   w-full my-3 break-words ">
-        <span className="font-semibold text-content">Summary</span> : {post.summary}
+        <span className="font-semibold text-content">Summary</span> : {blog.summary}
       </p>
       <hr className="w-[50%] md:w-[15%] h-[2px] bg-card mb-4 " />
 

@@ -1,59 +1,25 @@
 import Input from '../../components/Form/Input/Input';
 import FormButton from '../../components/Form/FormButton/FormButton';
 import { useForm } from "react-hook-form";
-import { toast } from 'react-toastify';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import useAuth from '../../hooks/useAuth';
+ import useAuth from '../../hooks/useAuth';
+import { useLogin } from '../../query/react-query';
 
 const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const {login,isLoggedIn} = useAuth();
+    const {mutate,isPending:isLoading} = useLogin(navigate);
 
     if(isLoggedIn) return <Navigate to='/'  />
 
-    const onSubmit = async (data) => {
-        setIsLoading(true);
-        const {email,password} = data;
-        try {
-
-            const options = {
-                method:'POST',
-                body:JSON.stringify({email,password}),
-                headers:{'Content-Type':'application/json'},
-                credentials:'include'
-            }
-
-            const res = await fetch('http://localhost:4000/auth/login', options);
-            const data = await res.json();
-                        
-            toast.dismiss();
-            
-
-            if(res.ok){
-                toast(data.message);
-                const token = data?.token;
-                login(data.data,token);
-                navigate('/');
-            }else{
-                toast(data.message);
-            }
-
-            
-            
-        } catch (err) {
-            toast('Login Failed!!!!');
-        } finally {
-            setIsLoading(false);
-        }
-
+    const onSubmit = async (formData) => {
+      mutate({formData,login});
     }
 
     return (
-        <section className="h-screen w-full flex justify-center items-center overflow-hidden">
-            <form className='custom-form px-4 py-6 h-max w-[90%]' onSubmit={handleSubmit(onSubmit)} >
+        <section className="h-full w-full md:w-[60%] md:mx-auto flex justify-center items-center">
+            <form className='custom-form px-4 py-6 h-max w-[90%] mx-auto' onSubmit={handleSubmit(onSubmit)} >
                 <h1 className='form-heading'>Login</h1>
                 <Input type='email' placeholder='Enter your email here' register={register} label={'email'} validations={{ required: "Email is required", minLength: 5 }} />
                 {errors.email && <p role="alert">{errors.email?.message} {errors.email?.type === 'minLength' && 'Email must have at least 5 chararacters'} </p>}

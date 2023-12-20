@@ -8,7 +8,7 @@ const Post = ({ post }) => {
     return (
         <>
         {/* for mobile */}
-            <div className='md:hidden post bg-card text-content p-4 flex flex-col gap-4 rounded-md'>
+            <div className='md:hidden post bg-card text-content p-4 flex flex-col gap-4 rounded-md shadow-2xl'>
                 <div className='blog-image bg-green-600'>
                     <Link to={`/blog/${post?._id}`}>
                         <img src={imagePath} alt="blog image" className='object-cover w-full h-full  ' />

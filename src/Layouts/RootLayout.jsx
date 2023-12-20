@@ -16,7 +16,7 @@ const RootLayout = () => {
   return (<>
     <Header />
 
-    <main className={`${isDarkTheme ? 'dark' : 'light'} bg-background text-content w-full h-screen overflow-hidden`}>
+    <main className={`${isDarkTheme ? 'dark' : 'light'} bg-background text-content w-full h-screen overflow-scroll overflow-x-hidden`}>
       <Outlet />
     </main>
 

@@ -12,7 +12,7 @@ const Header = () => {
   const { isDarkTheme, toggleTheme } = useTheme()
 
   return (
-    <header className={`${isDarkTheme ? 'dark' : 'light'} fixed top-0 left-0 bg-card text-content md:bg-background md:text-content p-2 w-full h-[70px] flex justify-between items-center font-semibold z-10`}>
+    <header className={`${isDarkTheme ? 'dark' : 'light'} sticky top-0 bg-card text-content md:bg-background md:text-content p-2 w-full h-[70px] flex justify-between items-center font-semibold z-10`}>
       <Link to="/" className='text-2xl text-logo'>Dev-Point</Link>
       <div className='w-2/3 h-full flex justify-end'>
         <nav className="hidden md:flex text-lg w-2/3 h-full justify-end items-center gap-6 mr-4  ">
