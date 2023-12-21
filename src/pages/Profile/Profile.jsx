@@ -3,6 +3,7 @@ import AllBlogs from "../../components/AllBlogs/AllBlogs";
 import useAuth from "../../hooks/useAuth";
 import FormButton from '../../components/Form/FormButton/FormButton';
 import { Link } from 'react-router-dom';
+import Loading from '../../components/LazyLoader/Loading';
 
 const tempImage = 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg';
 
@@ -11,7 +12,7 @@ const Profile = () => {
 
     const {user} = useAuth();
 
-    if(!user) return <p>Loading.......</p>;
+    if(!user) return <Loading /> ;
 
     const { name, createdAt,  blogPosts,profilePicture } = user;
     const imagePath = profilePicture;

@@ -21,11 +21,12 @@ const PostPage = () => {
   const [deletePost, setDeletePost] = useState(false);
 
   const navigate = useNavigate();
+  
 
-  const {data,isError,isPending,error} = useGetBlog(blogId);
+  const {data,isError,isPending:loadingBlog,error} = useGetBlog(blogId);
   const {mutate,isPending:isDeleting} =useDeleteBlog(navigate);
-    
-  if (isPending) return <Loading />
+  
+  if (!user || loadingBlog) return <Loading />
   if(isError) return <Error message={error.message} />
   
   const {post : blog} = data;

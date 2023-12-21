@@ -56,10 +56,7 @@ export const isTokenValid = async ({ signal, token }) => {
     };
     const res = await fetch(`${API_ENDPOINT}/auth/profile`, options, { signal });
     const data = await res.json();
-    if (res.ok) {
-        // setUser(data.data);
-        // setIsLoggedIn(true);
-    } else {
+    if (!res.ok) {
         localStorage.removeItem('devPToken');
         const error = new Error('Could not fetch user data');
         error.status = res.status;

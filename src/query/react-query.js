@@ -66,7 +66,7 @@ export const useUpdateBlog = (navigate, postId) => {
         mutationKey: ['updateBlog'],
         mutationFn: updateBlog,
         onSuccess: () => {
-            queryClient.invalidateQueries(['getBlogs']);
+            queryClient.invalidateQueries(['getBlog','getBlogs']);
             toast('Blog Updated Succesfully');
             navigate(`/blog/${postId}`);
         },
