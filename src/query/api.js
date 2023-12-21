@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 
 const API_ENDPOINT = import.meta.env.VITE_ENDPOINT;
-const token = localStorage.getItem('devPToken');
+
 
 export const getBlogs = async () => {
 
@@ -21,7 +21,7 @@ export const getBlogs = async () => {
 
 
 export const getBlog = async ({ signal, blogId }) => {
-
+    const token = localStorage.getItem('devPToken');
     const headers = new Headers({
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json', 
@@ -45,16 +45,14 @@ export const getBlog = async ({ signal, blogId }) => {
     return data;
 }
 
-export const isTokenValid = async ({ signal, token }) => {
-
-    const tokenInfo = { token };
+export const getUserProfile = async () => {
+    const token = localStorage.getItem('devPToken');
     const options = {
-        method: 'POST',
-        body: JSON.stringify(tokenInfo),
+        method: 'GET',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
 
     };
-    const res = await fetch(`${API_ENDPOINT}/auth/profile`, options, { signal });
+    const res = await fetch(`${API_ENDPOINT}/auth/profile`, options);
     const data = await res.json();
     if (!res.ok) {
         localStorage.removeItem('devPToken');
@@ -71,7 +69,7 @@ export const isTokenValid = async ({ signal, token }) => {
 };
 
 export const createBlog = async ({ values, textAreaContent }) => {
-
+    const token = localStorage.getItem('devPToken');
     const formData = new FormData();
 
     const { title, summary, file } = values;
@@ -103,7 +101,7 @@ export const createBlog = async ({ values, textAreaContent }) => {
 };
 
 export const updateBlog = async ( formDatas ) => {
-
+    const token = localStorage.getItem('devPToken');
     const formData = new FormData();
     const { title, summary, file, textAreaContent, postId } = formDatas;
 
@@ -121,7 +119,7 @@ export const updateBlog = async ( formDatas ) => {
         headers: { 'Authorization': `Bearer ${token}` }
     }
 
-    const res = await fetch('http://localhost:4000/blog/update', options);
+    const res = await fetch(`${API_ENDPOINT}/blog/update`, options);
     const data = await res.json();
 
     if (!res.ok) {
@@ -143,7 +141,7 @@ export const updateBlog = async ( formDatas ) => {
 
 
 export const deleteBlog = async (blogId) => {
-
+    const token = localStorage.getItem('devPToken');
     const options = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -151,7 +149,7 @@ export const deleteBlog = async (blogId) => {
     const url = `${API_ENDPOINT}/blog/delete/${blogId}`;
     const res = await fetch(url, options);
     const data = await res.json();
-    
+
     if (!res.ok) {
         const error = new Error('Could not delete your blog');
         error.status = res.status;
@@ -166,7 +164,7 @@ export const deleteBlog = async (blogId) => {
 
 
 export const getBloggers = async () => {
-
+    const token = localStorage.getItem('devPToken');
     const options = {
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
     }
@@ -188,7 +186,7 @@ export const getBloggers = async () => {
 
 
 export const getBlogger = async ({ signal, bloggerId }) => {
-
+    const token = localStorage.getItem('devPToken');
 
     const options = {
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
@@ -211,7 +209,7 @@ export const getBlogger = async ({ signal, bloggerId }) => {
 }
 
 export const updateProfile = async (values) => {
-
+    const token = localStorage.getItem('devPToken');
     const { name, currentpassword, password, confirmpassword, file } = values;
 
     const formData = new FormData();
@@ -222,10 +220,15 @@ export const updateProfile = async (values) => {
     formData.set('confirmpassword', confirmpassword ? confirmpassword : '');
     formData.set('file', file[0]);
 
+
+    const headers = new Headers({
+        'Authorization': `Bearer ${token}`,
+    });
+
     const options = {
         method: "POST",
         body: formData,
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: headers
     }
 
 
@@ -233,7 +236,7 @@ export const updateProfile = async (values) => {
     const data = await res.json();
 
     if (!res.ok) {
-        const error = new Error('Could not get all bloggers');
+        const error = new Error('Could not update profile');
         error.status = res.status;
         error.message = data.message;
         throw error;
@@ -248,7 +251,7 @@ export const loginUser = async ({ formData, login }) => {
     const options = {
         method: 'POST',
         body: JSON.stringify({ email, password }),
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        headers: { 'Content-Type': 'application/json' },
     }
 
     const res = await fetch(`${API_ENDPOINT}/auth/login`, options);

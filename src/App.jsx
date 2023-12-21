@@ -5,10 +5,8 @@ import {
 } from "react-router-dom";
 
 
-import Lazy from './components/LazyLoader/Lazy';
 import { Login, Register, Home, ErrorPage, CreatePost, PostPage, EditPost, Explore, BloggerProfile, Profile, EditProfile, } from './pages';
 import Protected from './components/ProtectedRoutes/Protected';
-
 
 
 const router = createBrowserRouter(
@@ -17,16 +15,16 @@ const router = createBrowserRouter(
 
     <Route path="/" element={<RootLayout />}>
 
-      <Route index element={<Lazy><Home /></Lazy>} />
+      <Route index element={<Home />} />
       
       <Route path='/login' element={<Login />} />,
       <Route path='/register' element={<Register />} />,
       <Route element={<Protected />}>
-        <Route path='/blog/:blogId' element={<Lazy><PostPage /></Lazy>} />
+        <Route path='/blog/:blogId' element={<PostPage />} />
         <Route path='/edit/:postId' element={<EditPost />} />
         <Route path='/edit-profile' element={<EditProfile />} />
         <Route path='/bloggers/:bloggerId' element={<BloggerProfile />} />
-        <Route path='/profile' element={<Lazy><Profile /></Lazy>} />
+        <Route path='/profile' element={<Profile />} />
         <Route path='/create' element={<CreatePost />} />
         <Route path='/explore' element={<Explore />} />
       </Route>
@@ -37,6 +35,10 @@ const router = createBrowserRouter(
 );
 
 function App() {
+
+
+
+  
 
   return (
     <RouterProvider router={router} />

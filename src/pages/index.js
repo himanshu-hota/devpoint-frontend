@@ -1,4 +1,3 @@
-import React from 'react';
 
 import Login from './Login/Login';
 import Register from './Register/Register';
@@ -7,11 +6,11 @@ import CreatePost from './CreatePost/CreatePost';
 import EditPost from './EditPost/EditPost';
 import Explore from './Explore/Explore';
 import BloggerProfile from './Explore/BloggerProfile';
-// import Profile from './Profile/Profile';
+import Home from './Home/Home';
+import PostPage from './Post/PostPage';
+import Profile from './Profile/Profile';
 import EditProfile from './EditProfile/EditProfile';
-const Home = React.lazy(() => import('./Home/Home'));
-const PostPage = React.lazy(() => import('./Post/PostPage'));
-const Profile = React.lazy(() => import('./Profile/Profile'));
+
 
 
 export {

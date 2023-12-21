@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { getBlogs, getBlog, isTokenValid, createBlog, queryClient, deleteBlog, getBloggers, getBlogger, updateProfile, loginUser, registerUser, updateBlog } from "./api"
+import { getBlogs, getBlog,  createBlog, queryClient, deleteBlog, getBloggers, getBlogger, updateProfile, loginUser, registerUser, updateBlog, getUserProfile } from "./api"
 import { toast } from "react-toastify"
 
 // AUTH LOGIN, REGISTER
@@ -40,12 +40,12 @@ export const useRegister = (navigate) => {
 
 // TOKEN VALIDATION
 
-export const useValidateToken = (token) => {
+export const useGetProfile = () => {
 
     return useQuery({
-        queryKey: ['getProfile', token],
-        queryFn: ({ signal }) => isTokenValid({ signal, token }),
-    })
+        queryKey: ['getProfile'],
+        queryFn: getUserProfile,
+    });
 }
 
 // ALL BLOGS
@@ -95,8 +95,7 @@ export const useUpdateBlog = (navigate, postId) => {
             toast('Blog Updated Succesfully');
             navigate(`/blog/${postId}`);
         },
-        onError: (err) => {
-            console.log(err);
+        onError: () => {
             toast('Failed to update blog');
         }
     });

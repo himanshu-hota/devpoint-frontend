@@ -15,11 +15,11 @@ const Post = ({ post }) => {
                     </Link>
                 </div>
                 <div className='blog-content glassmorphic-content h-full w-full flex flex-col gap-3 '>
-                    <Link to={`/blog/${post?._id}`}>
+                    <Link to={`/blog/${post?._id.toString()}`}>
                         <h2 className="text-3xl font-semibold">{post?.title}</h2>
                     </Link>
                     <p className='flex gap-2 '>
-                        <Link to={`/bloggers/${post?.author?._id}`} className='text-md'><span className=" ">Author</span> : {post?.author?.name} -- </Link>
+                        <Link to={`/bloggers/${post?.author?._id.toString()}`} className='text-md'><span className=" ">Author</span> : {post?.author?.name} -- </Link>
 
                         <time className='italic'>{formatTime(new Date(post?.createdAt))}</time>
 
