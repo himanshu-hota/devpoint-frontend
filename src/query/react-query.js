@@ -2,20 +2,43 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { getBlogs, getBlog, isTokenValid, createBlog, queryClient, deleteBlog, getBloggers, getBlogger, updateProfile, loginUser, registerUser, updateBlog } from "./api"
 import { toast } from "react-toastify"
 
-export const useGetBlogs = () => {
-    return useQuery({
-        queryKey: ['getBlogs'],
-        queryFn: getBlogs,
-    })
+// AUTH LOGIN, REGISTER
+
+export const useLogin = (navigate) => {
+
+    return useMutation({
+        mutationKey: ['loginUser'],
+        mutationFn: loginUser,
+        onSuccess: () => {
+            toast('Login successful!!!');
+            navigate('/');
+        },
+        onError: (error) => {
+            toast(error.toString());
+
+        }
+    });
+
+}
+
+export const useRegister = (navigate) => {
+
+    return useMutation({
+        mutationKey: ['registerUser'],
+        mutationFn: registerUser,
+        onSuccess: () => {
+            toast('Registeration successful!!!');
+            navigate('/login');
+        },
+        onError: (error) => {
+            toast(error.toString());
+        }
+    });
+
 }
 
 
-export const useGetBlog = (blogId) => {
-    return useQuery({
-        queryKey: ['getBlog'],
-        queryFn: ({ signal }) => getBlog({ signal, blogId }),
-    })
-}
+// TOKEN VALIDATION
 
 export const useValidateToken = (token) => {
 
@@ -25,22 +48,24 @@ export const useValidateToken = (token) => {
     })
 }
 
-export const useGetBloggers = () => {
+// ALL BLOGS
 
+export const useGetBlogs = () => {
     return useQuery({
-        queryKey: ['getBloggers'],
-        queryFn: getBloggers,
+        queryKey: ['getBlogs'],
+        queryFn: getBlogs,
     })
 }
 
-export const useGetBlogger = (bloggerId) => {
 
+// BLOG - CREATE, EDIT/UPDATE , DELETE
+
+export const useGetBlog = (blogId) => {
     return useQuery({
-        queryKey: ['getBloggers'],
-        queryFn: ({ signal }) => getBlogger({ signal, bloggerId })
+        queryKey: ['getBlog'],
+        queryFn: ({ signal }) => getBlog({ signal, blogId }),
     })
 }
-
 
 export const useCreateBlog = (navigate) => {
 
@@ -66,30 +91,13 @@ export const useUpdateBlog = (navigate, postId) => {
         mutationKey: ['updateBlog'],
         mutationFn: updateBlog,
         onSuccess: () => {
-            queryClient.invalidateQueries(['getBlog','getBlogs']);
+            queryClient.invalidateQueries(['getBlog', 'getBlogs']);
             toast('Blog Updated Succesfully');
             navigate(`/blog/${postId}`);
         },
         onError: (err) => {
             console.log(err);
             toast('Failed to update blog');
-        }
-    });
-
-}
-
-export const useUpdateProfile = (navigate) => {
-
-    return useMutation({
-        mutationKey: ['updateProfile'],
-        mutationFn: updateProfile,
-        onSuccess: () => {
-            queryClient.invalidateQueries(['getProfile']);
-            toast('Profile updated succesfully');
-            navigate('/profile');
-        },
-        onError: () => {
-            toast('Failed to update profile');
         }
     });
 
@@ -112,37 +120,43 @@ export const useDeleteBlog = (navigate) => {
 
 }
 
-export const useLogin = (navigate) => {
+
+// ALL BLOGGERS
+
+export const useGetBloggers = () => {
+
+    return useQuery({
+        queryKey: ['getBloggers'],
+        queryFn: getBloggers,
+    })
+}
+
+// SINGLE BLOGGER
+
+export const useGetBlogger = (bloggerId) => {
+
+    return useQuery({
+        queryKey: ['getBlogger'],
+        queryFn: ({ signal }) => getBlogger({ signal, bloggerId })
+    })
+}
+
+// PROFILE
+
+export const useUpdateProfile = (navigate) => {
 
     return useMutation({
-        mutationKey: ['loginUser'],
-        mutationFn: loginUser,
+        mutationKey: ['updateProfile'],
+        mutationFn: updateProfile,
         onSuccess: () => {
-            toast('Login successful!!!');
-            navigate('/');
+            queryClient.invalidateQueries(['getProfile', 'getBlogs', 'getBloggers','getBlogger']);
+            toast('Profile updated succesfully');
+            navigate('/profile');
         },
-        onError: (error) => {
-            toast(error.toString());
-
+        onError: () => {
+            toast('Failed to update profile');
         }
     });
 
 }
 
-
-
-export const useRegister = (navigate) => {
-
-    return useMutation({
-        mutationKey: ['registerUser'],
-        mutationFn: registerUser,
-        onSuccess: () => {
-            toast('Registeration successful!!!');
-            navigate('/login');
-        },
-        onError: (error) => {
-            toast(error.toString());
-        }
-    });
-
-}
