@@ -18,18 +18,17 @@ const router = createBrowserRouter(
     <Route path="/" element={<RootLayout />}>
 
       <Route index element={<Lazy><Home /></Lazy>} />
+      
       <Route path='/login' element={<Login />} />,
       <Route path='/register' element={<Register />} />,
       <Route element={<Protected />}>
         <Route path='/blog/:blogId' element={<Lazy><PostPage /></Lazy>} />
-        {/* <Route path='/user/:userId' element={<User />} /> */}
         <Route path='/edit/:postId' element={<EditPost />} />
         <Route path='/edit-profile' element={<EditProfile />} />
         <Route path='/bloggers/:bloggerId' element={<BloggerProfile />} />
         <Route path='/profile' element={<Lazy><Profile /></Lazy>} />
         <Route path='/create' element={<CreatePost />} />
         <Route path='/explore' element={<Explore />} />
-        
       </Route>
 
       <Route path='*' element={<ErrorPage />} />,

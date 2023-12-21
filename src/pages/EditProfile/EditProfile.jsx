@@ -13,10 +13,8 @@ const EditProfile = () => {
     const [updatePassword, setUpdatePassword] = useState(false)
     const navigate = useNavigate();
     const { user } = useAuth();
-    const { mutate,isPending:isLoading,error } = useUpdateProfile(navigate);
+    const { mutate,isPending:isLoading } = useUpdateProfile(navigate);
 
-
-    console.log(error);
 
     useEffect(() => {
         setValue('name', user?.name);

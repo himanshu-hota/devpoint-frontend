@@ -1,6 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 
 const API_ENDPOINT = import.meta.env.VITE_ENDPOINT;
+const token = localStorage.getItem('devPToken');
 
 export const getBlogs = async () => {
 
@@ -21,7 +22,17 @@ export const getBlogs = async () => {
 
 export const getBlog = async ({ signal, blogId }) => {
 
-    const res = await fetch(`${API_ENDPOINT}/blogs/${blogId}`, { signal });
+    const headers = new Headers({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json', 
+    });
+
+    const options = {
+        method: 'GET',
+        headers: headers,
+    };
+
+    const res = await fetch(`${API_ENDPOINT}/blogs/${blogId}`, options,{ signal });
     const data = await res.json();
 
     if (!res.ok) {
@@ -40,7 +51,7 @@ export const isTokenValid = async ({ signal, token }) => {
     const options = {
         method: 'POST',
         body: JSON.stringify(tokenInfo),
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
 
     };
     const res = await fetch(`${API_ENDPOINT}/auth/profile`, options, { signal });
@@ -62,12 +73,21 @@ export const isTokenValid = async ({ signal, token }) => {
 
 };
 
-export const createBlog = async ({ formData }) => {
+export const createBlog = async ({ values, textAreaContent }) => {
+
+    const formData = new FormData();
+
+    const { title, summary, file } = values;
+
+    formData.set('title', title);
+    formData.set('summary', summary);
+    formData.set('content', textAreaContent);
+    formData.set('file', file[0]);
 
     const options = {
         method: "POST",
         body: formData,
-        credentials: 'include'
+        headers: { 'Authorization': `Bearer ${token}` }
     }
 
     const res = await fetch(`${API_ENDPOINT}/blog/create`, options);
@@ -76,7 +96,6 @@ export const createBlog = async ({ formData }) => {
         const error = new Error('Could not create your blog');
         error.status = res.status;
         error.message = data.message;
-
         throw error;
     }
 
@@ -86,12 +105,51 @@ export const createBlog = async ({ formData }) => {
 
 };
 
+export const updateBlog = async ( formDatas ) => {
+
+    const formData = new FormData();
+    const { title, summary, file, textAreaContent, postId } = formDatas;
+
+    formData.set('title', title);
+    formData.set('summary', summary);
+    formData.set('content', textAreaContent);
+    formData.set('postId', postId);
+    if (file && file[0]) {
+        formData.set('file', file[0]);
+    }
+
+    const options = {
+        method: "PUT",
+        body: formData,
+        headers: { 'Authorization': `Bearer ${token}` }
+    }
+
+    const res = await fetch('http://localhost:4000/blog/update', options);
+    const data = await res.json();
+
+    if (!res.ok) {
+        const error = new Error('Could not create your blog');
+        error.status = res.status;
+        error.message = data.message;
+
+        throw error;
+
+        // toast('Blog Updated successfully!!!');
+        
+    }
+
+
+    return data;
+
+};
+
+
+
 export const deleteBlog = async (blogId) => {
 
     const options = {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
     };
     const url = `${API_ENDPOINT}/blog/delete/${blogId}`;
     const res = await fetch(url, options);
@@ -112,7 +170,11 @@ export const deleteBlog = async (blogId) => {
 
 export const getBloggers = async () => {
 
-    const res = await fetch(`${API_ENDPOINT}/user/bloggers`);
+    const options = {
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+    }
+
+    const res = await fetch(`${API_ENDPOINT}/user/bloggers` , options);
     const data = await res.json();
 
     if (!res.ok) {
@@ -131,7 +193,11 @@ export const getBloggers = async () => {
 export const getBlogger = async ({ signal, bloggerId }) => {
 
 
-    const res = await fetch(`${API_ENDPOINT}/user/bloggers/${bloggerId}`, { signal });
+    const options = {
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+    }
+
+    const res = await fetch(`${API_ENDPOINT}/user/bloggers/${bloggerId}`, options, { signal });
     const blogger = await res.json();
 
 
@@ -162,7 +228,7 @@ export const updateProfile = async (values) => {
     const options = {
         method: "POST",
         body: formData,
-        credentials: 'include'
+        headers: { 'Authorization': `Bearer ${token}` }
     }
 
 
@@ -185,8 +251,7 @@ export const loginUser = async ({ formData, login }) => {
     const options = {
         method: 'POST',
         body: JSON.stringify({ email, password }),
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
     }
 
     const res = await fetch(`${API_ENDPOINT}/auth/login`, options);
