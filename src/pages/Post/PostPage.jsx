@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import DOMPurify from 'dompurify';
 import { CiEdit } from "react-icons/ci";
@@ -16,19 +16,28 @@ import Loading from "../../components/LazyLoader/Loading";
 
 const PostPage = () => {
 
+  const [loaded, setLoaded] = useState(false);
   const { blogId } = useParams();
   const { user } = useAuth();
   const [deletePost, setDeletePost] = useState(false);
 
   const navigate = useNavigate();
   
-
-  const {data,isError,isPending:loadingBlog,error} = useGetBlog(blogId);
+  const {data,isError,isLoading:loadingBlog,error} = useGetBlog(blogId);
   const {mutate,isPending:isDeleting} =useDeleteBlog(navigate);
   
-  if (!user || loadingBlog) return <Loading />
+  useEffect(() => {
+    
+    const timeoutId = setTimeout(() => {
+      setLoaded(true);
+    }, 2000); 
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  if (!loaded || !user || loadingBlog) return <Loading />
   if(isError) return <Error message={error.message} />
-  
+
   const {post : blog} = data;
   // Sanitize the HTML content using DOMPurify
   const sanitizedSummary = DOMPurify.sanitize(blog.content);

@@ -151,7 +151,7 @@ export const deleteBlog = async (blogId) => {
     const url = `${API_ENDPOINT}/blog/delete/${blogId}`;
     const res = await fetch(url, options);
     const data = await res.json();
-
+    
     if (!res.ok) {
         const error = new Error('Could not delete your blog');
         error.status = res.status;
