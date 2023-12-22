@@ -40,7 +40,7 @@ const EditProfile = () => {
             <form className='custom-form px-4 py-6 h-max w-[90%] ' onSubmit={handleSubmit(onSubmit)}>
                 <h1 className='form-heading'>Update Profile</h1>
 
-                <Input type='text' placeholder='Enter your name here' register={register} label={'name'} validations={{ required: "Name is required" }} />
+                <Input type='text' placeholder='Enter your name here' register={register} label={'name'} validations={{ required: "Name is required", maxLength: 50 }} />
                 {errors.name && <p role="alert">{errors.name?.message} </p>}
 
                 <div className='w-full'>

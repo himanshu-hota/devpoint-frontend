@@ -29,17 +29,17 @@ const Register = () => {
       <form className='custom-form h-max w-[90%] md:w-[50%] mx-auto px-4 py-4 ' onSubmit={handleSubmit(onSubmit)}>
         <h1 className='form-heading'>Register</h1>
         
-        <Input type='text' placeholder='Enter your name here' register={register} label={'name'} validations={{ required: "Name is required" }} />
+        <Input type='text' placeholder='Enter your name here' register={register} label={'name'} validations={{ required: "Name is required", maxLength: 50 }} />
         {errors.name && <p role="alert">{errors.name?.message} </p>}
 
-        <Input type='email' placeholder='Enter your email here' register={register} label={'email'} validations={{ required: "Email is required", minLength: 5 }} />
+        <Input type='email' placeholder='Enter your email here' register={register} label={'email'} validations={{ required: "Email is required", minLength: 5, maxLength: 50 }} />
         {errors.email && <p role="alert">{errors.email?.message} {errors.email?.type === 'minLength' && 'Email must have at least 5 chararacters'} </p>}
 
 
-        <Input type='password' placeholder='Enter your password here' register={register} label={'password'} validations={{ required: "Password is required", minLength: 8 }} />
+        <Input type='password' placeholder='Enter your password here' register={register} label={'password'} validations={{ required: "Password is required", minLength: 8, maxLength: 50 }} />
         {errors.password && <p role="alert">{errors.password?.message} {errors.password?.type === 'minLength' && 'Password must have at least 8 chararacters'}</p>}
 
-        <Input type='password' placeholder='Confirm Password' register={register} label={'confirmpassword'} validations={{ required: "Confirm-Password is required", minLength: 8, validate: validateConfirmPassword, }} />
+        <Input type='password' placeholder='Confirm Password' register={register} label={'confirmpassword'} validations={{ required: "Confirm-Password is required", minLength: 8, maxLength: 50, validate: validateConfirmPassword, }} />
         {errors.confirmpassword && <p role="alert">{errors.confirmpassword?.message}</p>}
 
         <FormButton disabled={isLoading}>{isLoading ? "Loading...." : 'Register'}</FormButton>

@@ -41,11 +41,11 @@ const EditPost = () => {
             {data && <form className='custom-form p-4  mx-auto h-full w-[90%] overflow-scroll relative' onSubmit={handleSubmit(onSubmit)} >
 
                 <h1 className='form-heading'>Edit blog</h1>
-                <Input type='text' placeholder='Enter your title here' register={register} label={'title'} validations={{ required: "Title is required", minLength: 5 }} />
+                <Input type='text' placeholder='Enter your title here' register={register} label={'title'} validations={{ required: "Title is required", minLength: 5, maxLength: 50 }} />
                 {errors.title && <p role="alert">{errors.title?.message} {errors.title?.type === 'minLength' && 'Title must have at least 5 chararacters'} </p>}
 
 
-                <Input type='text' placeholder='Enter your summary here' register={register} label={'summary'} validations={{ required: "Summary is required", minLength: 8 }} />
+                <Input type='text' placeholder='Enter your summary here' register={register} label={'summary'} validations={{ required: "Summary is required", minLength: 8, maxLength: 50 }} />
                 {errors.summary && <p role="alert">{errors.summary?.message} {errors.summary?.type === 'minLength' && 'Summary must have at least 8 chararacters'}</p>}
 
                 <div className="w-full">

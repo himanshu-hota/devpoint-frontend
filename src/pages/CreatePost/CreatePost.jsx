@@ -21,11 +21,11 @@ const CreatePost = () => {
     <section className="h-full w-full bg-background text-content px-8 py-20 overflow-scroll ">
       <form className='custom-form px-4 py-8 h-max w-full md:w-[60%] md:mx-auto' onSubmit={handleSubmit(onSubmit)} >
         <h1 className='form-heading'>Create a blog</h1>
-        <Input type='text' placeholder='Enter your title here' register={register} label={'title'} validations={{ required: "Title is required", minLength: 5 }} />
+        <Input type='text' placeholder='Enter your title here' register={register} label={'title'} validations={{ required: "Title is required", minLength: 5, maxLength: 50 }} />
         {errors.title && <p role="alert">{errors.title?.message} {errors.title?.type === 'minLength' && 'Title must have at least 5 chararacters'} </p>}
 
 
-        <Input type='text' placeholder='Enter your summary here' register={register} label={'summary'} validations={{ required: "Summary is required", minLength: 8 }} />
+        <Input type='text' placeholder='Enter your summary here' register={register} label={'summary'} validations={{ required: "Summary is required", minLength: 8,maxLength:50 }} />
         {errors.summary && <p role="alert">{errors.summary?.message} {errors.summary?.type === 'minLength' && 'Summary must have at least 8 chararacters'}</p>}
 
         <Input type='file' register={register} label={'file'} validations={{ required: "Blog image is required" }} />
