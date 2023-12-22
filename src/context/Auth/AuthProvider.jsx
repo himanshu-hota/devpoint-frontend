@@ -32,7 +32,6 @@ const AuthProvider = ({ children }) => {
                     const API_ENDPOINT = import.meta.env.VITE_ENDPOINT;
                     const res = await fetch(`${API_ENDPOINT}/auth/profile`, options);
                     const data = await res.json();
-                    console.log(data);
                     if (res.ok) {
                         setUser(data.data);
                         setIsLoggedIn(true);

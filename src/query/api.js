@@ -62,8 +62,7 @@ export const getUserProfile = async () => {
         throw error;
     }
 
-
-    return data;
+    return data.data;
     // toast('Something went wrong!!!');
 
 };

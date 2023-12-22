@@ -4,13 +4,26 @@ import AllBlogs from "../../components/AllBlogs/AllBlogs";
 import { useGetBlogger } from "../../query/react-query";
 import Loading from "../../components/LazyLoader/Loading";
 import Error from "../ErrorPage/Error";
+import { useEffect, useState } from "react";
 
 const tempImage = 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg';
 
 const BloggerProfile = () => {
-
+    const [loaded, setLoaded] = useState(false);
     const { bloggerId } = useParams();
     const { data, isPending, isError, error } = useGetBlogger(bloggerId);
+
+    useEffect(() => {
+
+        const timeoutId = setTimeout(() => {
+            setLoaded(true);
+        }, 2000);
+
+        return () => clearTimeout(timeoutId);
+    }, []);
+
+
+    if (!loaded) return <Loading />
 
     if (isError) return <Error message={error.message} />
 

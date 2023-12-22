@@ -5,19 +5,30 @@ import { Link } from 'react-router-dom';
 import Loading from '../../components/LazyLoader/Loading';
 import { useGetProfile } from '../../query/react-query';
 import Error from '../ErrorPage/Error';
+import { useEffect, useState } from 'react';
 
 const tempImage = 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg';
 
 
 const Profile = () => {
 
+    const [loaded, setLoaded] = useState(false);
     const {data:user,isPending,isError,error} = useGetProfile();
     
+    useEffect(() => {
 
-    if(isPending) return <Loading />;
+        const timeoutId = setTimeout(() => {
+            setLoaded(true);
+        }, 2000);
+
+        return () => clearTimeout(timeoutId);
+    }, []);
+
+    
+
+    if (!loaded || isPending || !user) return <Loading />;
     if(isError) return <Error message={error.message} /> 
-
-    const { name, createdAt,  blogPosts,profilePicture } = user.data;
+    const { name, createdAt,  blogPosts,profilePicture } = user;
     const imagePath = profilePicture;
     return (
         <section className="blogger-profile bg-background text-content h-full w-full py-20 md:flex md:gap-6 md:px-12 md:mt-6 overflow-scroll overflow-x-hidden">

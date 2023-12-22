@@ -23,8 +23,7 @@ const Explore = () => {
     
   }, [bloggers,setFilteredBloggers,searchValue])
   
-  
-  // if(isPending) return <Loading />
+ 
   if(isError) return <Error message={error.message} />
 
   return (
